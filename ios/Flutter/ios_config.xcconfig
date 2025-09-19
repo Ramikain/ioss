@@ -1,0 +1,39 @@
+// iOS-specific configuration for Fresh Check-in App
+// This file contains iOS build settings and configurations
+
+// Minimum iOS deployment target
+IPHONEOS_DEPLOYMENT_TARGET = 12.0
+
+// Enable bitcode (set to NO for compatibility with some packages)
+ENABLE_BITCODE = NO
+
+// Code signing configuration
+CODE_SIGNING_ALLOWED = YES
+CODE_SIGNING_REQUIRED = YES
+
+// Swift version
+SWIFT_VERSION = 5.0
+
+// Enable modules
+CLANG_ENABLE_MODULES = YES
+
+// ARC settings
+CLANG_ENABLE_OBJC_ARC = YES
+
+// Optimization settings for release builds
+SWIFT_OPTIMIZATION_LEVEL_Release = -O
+SWIFT_OPTIMIZATION_LEVEL_Profile = -O
+
+// Debug information
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+
+// Supported device families (iPhone and iPad)
+TARGETED_DEVICE_FAMILY = 1,2
+
+// Bundle identifier prefix
+// PRODUCT_BUNDLE_IDENTIFIER = com.example.freshCheckinApp
+
+// App Transport Security settings (if needed for API calls)
+// NSAppTransportSecurity = {
+//   NSAllowsArbitraryLoads = YES
+// }
