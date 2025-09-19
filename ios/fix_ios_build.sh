@@ -1,52 +1,61 @@
 #!/bin/bash
-# iOS Build Fix Script
-# Run this script on macOS to fix path issues and prepare for iOS build
 
-echo "🔧 Fixing iOS build configuration..."
+# iOS Build Fix Script
+# This script fixes common iOS build issues when moving from Windows to macOS
+
+echo "🔧 Starting iOS build fix..."
 
 # Navigate to project root
 cd "$(dirname "$0")/.."
 
 echo "📁 Current directory: $(pwd)"
 
-# Clean Flutter build
-echo "🧹 Cleaning Flutter build..."
+# Step 1: Clean Flutter cache
+echo "🧹 Cleaning Flutter cache..."
 flutter clean
 
-# Remove generated iOS configuration files
-echo "🗑️  Removing generated iOS config files..."
-rm -f ios/Flutter/Generated.xcconfig
-rm -f ios/Flutter/flutter_export_environment.sh
+# Step 2: Remove iOS-specific cache files
+echo "🗑️  Removing iOS cache files..."
+rm -rf ios/Flutter/Generated.xcconfig
+rm -rf ios/Flutter/flutter_export_environment.sh
+rm -rf ios/.symlinks
+rm -rf ios/Pods
+rm -rf ios/Podfile.lock
 
-# Regenerate Flutter configuration
-echo "🔄 Regenerating Flutter configuration..."
+# Step 3: Get Flutter dependencies
+echo "📦 Getting Flutter dependencies..."
 flutter pub get
 
-# Navigate to iOS directory
+# Step 4: Navigate to iOS directory
 cd ios
 
-# Clean CocoaPods cache
-echo "🧹 Cleaning CocoaPods cache..."
-rm -rf Pods
-rm -f Podfile.lock
-
-# Update CocoaPods repo
-echo "📦 Updating CocoaPods repository..."
-pod repo update
-
-# Install pods
-echo "📦 Installing CocoaPods dependencies..."
+# Step 5: Install CocoaPods dependencies
+echo "🍫 Installing CocoaPods dependencies..."
 pod install
 
-# Clean Xcode derived data
-echo "🧹 Cleaning Xcode derived data..."
+# Step 6: Clean Xcode derived data
+echo "🧽 Cleaning Xcode derived data..."
 rm -rf ~/Library/Developer/Xcode/DerivedData
 
-echo "✅ iOS build configuration fixed!"
+# Step 7: Go back to project root
+cd ..
+
+echo "✅ iOS build fix completed!"
 echo ""
-echo "Next steps:"
-echo "1. Open ios/Runner.xcworkspace in Xcode"
-echo "2. Or run: flutter run"
-echo "3. Or build: flutter build ios"
+echo "🎯 Choose your next step:"
 echo ""
-echo "If you still encounter issues, check the README_iOS_Setup.md file."
+echo "For Development (Recommended):"
+echo "  flutter run -d 'iPhone Simulator'"
+echo ""
+echo "For Simulator Build:"
+echo "  flutter build ios --simulator"
+echo ""
+echo "For Device Testing (Requires Apple Developer Account):"
+echo "  1. Open: open ios/Runner.xcworkspace"
+echo "  2. Configure Development Team in Xcode"
+echo "  3. Run: flutter run -d 'iPhone'"
+echo ""
+echo "For CI/CD (No Code Signing):"
+echo "  flutter build ios --debug --no-codesign"
+echo ""
+echo "📖 For detailed instructions, see: ios/iOS_Development_Guide.md"

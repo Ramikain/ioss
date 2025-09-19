@@ -108,13 +108,40 @@ This script will automatically:
 
 ### Common Issues:
 
-1. **Build Failed: Did not find xcodeproj**:
+1. **Code Signing Issues (Most Common)**:
+   Error: "Building a deployable iOS app requires a selected Development Team with a Provisioning Profile"
+   
+   **Solutions:**
+   
+   **Option 1: Use iOS Simulator (Recommended for Development)**
+   ```bash
+   flutter run -d "iPhone Simulator"
+   # or
+   flutter build ios --simulator
+   ```
+   
+   **Option 2: Set up Development Team (For Device Testing)**
+   1. Open Xcode: `open ios/Runner.xcworkspace`
+   2. Select 'Runner' project → 'Runner' target
+   3. Go to 'Signing & Capabilities' tab
+   4. Sign in with your Apple ID in Xcode
+   5. Select your Development Team
+   6. Ensure 'Automatically manage signing' is checked
+   7. Verify Bundle Identifier is unique
+   
+   **Option 3: Build Without Code Signing (Advanced)**
+   ```bash
+   flutter build ios --debug --no-codesign
+   # Then manually sign in Xcode before deploying
+   ```
+
+2. **Build Failed: Did not find xcodeproj**:
    - This error occurs when the project was configured on Windows but built on macOS
    - **Solution**: Run `flutter clean` and `flutter pub get` on macOS
    - Regenerate iOS configuration: `cd ios && rm Flutter/Generated.xcconfig && cd .. && flutter pub get`
    - The Generated.xcconfig file will be recreated with correct macOS paths
 
-2. **Flutter Path Issues**:
+3. **Flutter Path Issues**:
    - If you see Windows paths (C:\flutter\flutter) in Generated.xcconfig on macOS:
    ```bash
    flutter clean
@@ -123,22 +150,22 @@ This script will automatically:
    pod install
    ```
 
-3. **Bluetooth Permission Denied**:
+4. **Bluetooth Permission Denied**:
    - Ensure Info.plist permissions are properly set
    - Check iOS Settings > Privacy & Security > Bluetooth
 
-4. **Camera Permission Denied**:
+5. **Camera Permission Denied**:
    - Verify NSCameraUsageDescription in Info.plist
    - Check iOS Settings > Privacy & Security > Camera
 
-5. **Pod Install Fails**:
+6. **Pod Install Fails**:
    ```bash
    cd ios
    pod repo update
    pod install --repo-update
    ```
 
-6. **Build Errors**:
+7. **Build Errors**:
    - Clean build folder: `flutter clean`
    - Reinstall pods: `cd ios && pod install`
    - Update Flutter: `flutter upgrade`
